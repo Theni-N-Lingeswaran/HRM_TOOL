@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
-  get 'dashboard/index'
-  devise_for :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  devise_for :users, controllers: { sessions: 'users/sessions' }, path: '', path_names: { sign_in: 'login', sign_out: 'logout', password: 'reset_password', confirmation: 'verification', unlock: 'unblock', registration: 'register', sign_up: '' }
 
-  # Defines the root path route ("/")
-  # root "articles#index"
-
+  devise_scope :user do
+    get 'logout', to: 'devise/sessions#destroy', as: 'logout'
+  end
+  
+  # root to: 'dashboard#redirect_user', as: 'root'
   root 'dashboard#index'
 end

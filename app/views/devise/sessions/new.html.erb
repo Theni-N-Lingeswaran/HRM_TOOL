@@ -1,0 +1,31 @@
+<div class='account-box'>
+  <div class='account-wrapper'>
+    <h3 class='account-title'>Login</h3>
+    <%if notice%>
+      <p class='account-subtitle devise_notice text-center'><%=notice%></p>
+    <%end%>
+    <%if alert%>
+      <p class='devise_alert text-center'><%=alert%></p>
+    <%end%>
+    
+    <!-- Account Form -->
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <div class='form-group'>
+        <%= f.label :email_address %>
+        <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control' %>
+      </div>
+      <div class='form-group'>
+        <%= f.label :password %>
+        <%= f.password_field :password, autocomplete: 'current-password', class: 'form-control' %>
+      </div>
+      <div class='form-group text-center'>
+        <%= f.submit 'Log in', class: 'btn btn-primary account-btn' %>
+      </div>
+      <div class='account-footer'>
+        <!-- <p>Don't have an account yet? <a href='register.html'>Register</a></p> -->
+        <%= render 'devise/shared/links' %>
+      </div>
+    <%end%>
+    <!-- /Account Form -->
+  </div>
+</div>
