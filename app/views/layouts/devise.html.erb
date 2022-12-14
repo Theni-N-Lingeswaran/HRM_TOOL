@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HRMTool</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="<%=asset_url('/assets/favicon.png')%>">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  </head>
+  <body class="account-page">
+  	<!-- Main Wrapper -->
+	  <div class="main-wrapper">
+	    <div class="account-content">
+	      <a href="job-list.html" class="btn btn-primary apply-btn">Apply Job</a>
+	      <div class="container">
+	        <!-- Account Logo -->
+	        <div class="account-logo">
+	          <a href="index.html"><img src="<%=asset_url('/assets/logo2.png')%>" alt="Dreamguy's Technologies"></a>
+	        </div>
+	        <!-- /Account Logo -->
+  				<%=yield%>
+				</div>
+	    </div>
+	  </div>
+		<!-- /Main Wrapper -->
+  </body>
+</html>
