@@ -97,3 +97,132 @@ p {
   font-size: 14px !important;
   vertical-align: -7px !important;
 }
+
+.task-wrapper .task-list-footer .new-task-wrapper .btn {
+  font-size: 10px !important;
+  padding: 5px 10px !important;
+}
+
+.task-wrapper .task-list-footer .new-task-wrapper .add-new-task-btn {
+  background: var(--color-primary) !important;
+}
+
+.add-task-btn {
+  border-radius: 5px !important;
+  font-size: 10px !important;
+  padding: 5px 10px !important;
+  text-transform: none !important;
+}
+
+.custom-menu.nav > li > a {
+  font-size: 20px !important;
+}
+
+.dropdown-menu {
+  font-size: 12px !important;
+  border: 1px rgb(131 129 129) !important;
+  border-radius: 5px !important;
+  background-color: #e9e7e7 !important;
+}
+
+.task-wrapper #task-list li.completed .task-container .task-label {
+  color: #959393 !important;
+}
+
+.task-complete-btn {
+  font-size: 10px !important;
+  padding: 5px 10px !important;
+}
+
+.task-action-btn > .profile-rightbar {
+  font-size: 12px !important;
+  margin-left: 0px !important;
+}
+
+@media only screen and (max-width: 991.98px) {
+  .detail-btn {
+    display: none !important;
+  }
+}
+
+/* ############################ chat window skeledon model start */
+.main-item {
+  padding: 10px;
+  background-color: #fff;
+}
+
+.background-masker {
+  background-color: #fff;
+  position: absolute;
+}
+
+.btn-divide-left {
+  left: 35%;
+  height: 100%;
+  width: 6%;
+}
+
+@keyframes placeHolderShimmer {
+  0% {
+    background-position: -800px 0
+  }
+  100% {
+    background-position: 800px 0
+  }
+}
+
+.animated-background {
+  animation-duration: 3s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: linear;
+  background-color: #bbbbbb78;
+  background: linear-gradient(to right, #eeeeee 8%, #bbbbbb 18%, #eeeeee 33%);
+  height: 100px;
+  position: relative;
+}
+
+.content-editor-skeleton {
+  height: 70px;
+  position: relative;
+}
+
+.contemt-header-skeleton {
+  background-color: #f6f7f8;
+  height: 70px;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.sub-rect {
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+}
+
+.btm-rect {
+  border-radius: 100%;
+  width: 31px;
+  height: 31px;
+  float: left;
+  margin: 20px 5px 20px 0px;
+}
+.pure-background {
+  background-color: #eeeeee;
+}
+
+.css-dom:empty {
+  height: 40px;
+  border-radius: 6px;
+  box-shadow: 0 5px 5px rgb(0 0 0 / 20%);
+  background-repeat: no-repeat;
+  background-image:
+    radial-gradient(circle 16px, lightgray 99%, transparent 0),
+    linear-gradient(lightgray, lightgray),
+    linear-gradient(lightgray, lightgray),
+    linear-gradient(lightgray, lightgray),
+    linear-gradient(lightgray, lightgray),
+    linear-gradient(#fff, #fff); 
+}
+/* ############################ chat window skeledon model end */

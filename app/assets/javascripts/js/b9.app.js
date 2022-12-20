@@ -47,7 +47,7 @@ $(document).ready(function() {
 		$wrapper.toggleClass('slide-nav');
 		$('.sidebar-overlay').toggleClass('opened');
 		$('html').addClass('menu-opened');
-		$('#task_window').removeClass('opened');
+		$('#task_window').show().removeClass('opened');
 		return false;
 	});
 	
@@ -56,15 +56,28 @@ $(document).ready(function() {
 			$(this).removeClass('opened');
 			$wrapper.removeClass('slide-nav');
 			$('.sidebar-overlay').removeClass('opened');
-			$('#task_window').removeClass('opened');
+			$('#task_window').show().removeClass('opened');
 	});
 	
 	// Chat sidebar overlay
 	
 	$(document).on('click', '#task_chat', function() {
-		$('.sidebar-overlay').toggleClass('opened');
-		$('#task_window').addClass('opened');
-		return false;
+		var task = $(this).closest('.task');
+		var taskToken = task.data('token');
+		$.ajax({
+	    url: '/task_detail',
+	    type: 'GET',
+	    data: {task_token: taskToken},
+	    beforeSend: function(xhr) {
+	      xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+	    },
+	    success: function(data) {
+	    	$('#task_window').html(data)
+	      $('.sidebar-overlay').toggleClass('opened');
+				$('#task_window').show().addClass('opened');
+				return false;
+	    }
+	  });
 	});
 	
 	// Select 2

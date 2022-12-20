@@ -290,7 +290,7 @@
             <div class="dropdown-menu">
               <a class="dropdown-item" href="profile.html">My Profile</a>
               <a class="dropdown-item" href="settings.html">Settings</a>
-              <a class="dropdown-item" href="login.html">Logout</a>
+              <a class="dropdown-item" href="<%=logout_path%>">Logout</a>
             </div>
           </li>
         </ul>
@@ -302,7 +302,7 @@
           <div class="dropdown-menu dropdown-menu-right">
             <a class="dropdown-item" href="profile.html">My Profile</a>
             <a class="dropdown-item" href="settings.html">Settings</a>
-            <a class="dropdown-item" href="login.html">Logout</a>
+            <a class="dropdown-item" href="<%=logout_path%>">Logout</a>
           </div>
         </div>
         <!-- /Mobile Menu -->
@@ -313,7 +313,12 @@
       <!-- Sidebar -->
         <%=render "layouts/sidepanel"%>
       <!-- /Sidebar -->
-      <%= yield %>
+
+      <!-- Page Wrapper -->
+      <div class="page-wrapper">
+        <%= yield %>
+      </div>
+      <!-- /Page Wrapper -->
     </div>
     <!-- /Main Wrapper -->
   </body>
