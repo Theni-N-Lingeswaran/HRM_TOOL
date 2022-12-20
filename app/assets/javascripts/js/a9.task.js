@@ -48,9 +48,20 @@
 				$('#mark-all-finished').removeClass('move-up');
 				$('#mark-all-incomplete').addClass('move-down');
 				// Show notification
-				updateNotification(newTask, 'added to list');
-				// Smoothly scroll the todo list to the end
-				$('.task-list-body').animate({ scrollTop: todoListScrollHeight}, 1000);
+				$.ajax({
+		      url: '/create_task',
+		      type: 'POST',
+		      data: {task: {title: newTask}},
+		      beforeSend: function(xhr) {
+		        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+		      },
+		      success: function(data) {
+		      	updateNotification(newTask, ' Task created successfully.')
+						// Smoothly scroll the todo list to the end
+						$('.task-list-body').animate({ scrollTop: todoListScrollHeight}, 1000);
+						closeNewTaskPanel();
+		      }
+		    });
 			}
 		};
 
@@ -69,23 +80,32 @@
     var taskTemplate = '<li class="task"><div class="task-container"><span class="task-action-btn task-check"><span class="action-circle large complete-btn" title="Mark Complete"><i class="material-icons">check</i></span></span><span class="task-label" contenteditable="true"></span><span class="task-action-btn task-btn-right"><span class="action-circle large" title="Assign"><i class="material-icons">person_add</i></span> <span class="action-circle large delete-btn" title="Delete Task"><i class="material-icons">delete</i></span></span></div></li>';
     // Shows panel for entering new tasks
     $('.add-task-btn').click(function() {
-        var newTaskWrapperOffset = $('.new-task-wrapper').offset().top;
-        $(this).toggleClass('visible');
-        $('.new-task-wrapper').toggleClass('visible');
-        // Focus on the text area for typing in new task
-        $('#new-task').focus();
-        // Smoothly scroll to the text area to bring the text are in view
-        $('body').animate({
-            scrollTop: newTaskWrapperOffset
-        }, 1000);
+      var newTaskWrapperOffset = $('.new-task-wrapper').offset().top;
+      $(this).toggleClass('visible');
+      $('.new-task-wrapper').toggleClass('visible');
+      // Focus on the text area for typing in new task
+      $('#new-task').focus();
+      // Smoothly scroll to the text area to bring the text are in view
+      $('body').animate({scrollTop: newTaskWrapperOffset}, 1000);
     });
 
 		// Deletes task on click of delete button
 		$('#task-list').on('click', '.task-action-btn .delete-btn', function(){
 			var task = $(this).closest('.task');
 			var taskText = task.find('.task-label').text();
-			task.remove();
-			updateNotification(taskText, ' has been deleted.');
+			var taskToken = task.data('token');
+			$.ajax({
+	      url: '/delist_task',
+	      type: 'POST',
+	      data: {task_token: taskToken, delist: true},
+	      beforeSend: function(xhr) {
+	        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+	      },
+	      success: function(data) {
+	      	task.remove();
+					updateNotification(taskText, ' has been deleted.');
+	      }
+	    });
 		});
 
 		// Marks a task as complete
@@ -93,10 +113,43 @@
 			var task = $(this).closest('.task');
 			var taskText = task.find('.task-label').text();
 			var newTitle = task.hasClass('completed') ? 'Mark Complete' : 'Mark Incomplete';
+			var taskToken = task.data('token');
+			var taskStatus = task.hasClass('task_window') ? 'pending' : 'completed';
 			$(this).attr('title', newTitle);
-			task.hasClass('completed') ? updateNotification(taskText, 'marked as Incomplete.') : updateNotification(taskText, ' marked as complete.', 'success');
-			task.toggleClass('completed');
+			$.ajax({
+	      url: '/update_task',
+	      type: 'POST',
+	      data: {task_token: taskToken, status: taskStatus},
+	      beforeSend: function(xhr) {
+	        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+	      },
+	      success: function(data) {
+	      	task.hasClass('completed') ? updateNotification(taskText, 'marked as Incomplete.') : updateNotification(taskText, ' marked as complete.', 'success');
+	      	task.toggleClass('completed');
+	      }
+	    });
 		});
+
+		// Load task Detail on click of detail button
+    $('#task-list').on('click', '.task-action-btn .detail-btn', function(){
+      var task = $(this).closest('.task');
+      var taskToken = task.data('token');
+      chatWindowStatus = $('#task_window').hasClass('opened');
+      $('#task_window').toggle().toggleClass('opened');
+      // if (chatWindowStatus == false) {
+        $.ajax({
+          url: '/task_detail',
+          type: 'GET',
+          data: {task_token: taskToken, chat_option: chatWindowStatus},
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+          },
+          success: function(data) {
+            setTimeout(function(){$('#task_window').html(data)}, 500);
+          }
+        });
+      // }
+    });
 
 		// Adds a task on hitting Enter key, hides the panel for entering new task on hitting Esc. key
 		$('#new-task').keydown(function(event){
@@ -117,7 +170,6 @@
 			// If key code is that of Esc Key then call closeNewTaskPanel Function
 			else if(keyCode == escapeKeyCode)
 				closeNewTaskPanel();
-
 		});
 
 		// Add new task on click of add task button
@@ -142,5 +194,6 @@
 			updateNotification('All tasks', 'marked as Incomplete.');
 		});
 
+		
 	});
 }(jQuery))

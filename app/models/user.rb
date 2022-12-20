@@ -4,10 +4,12 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
   
   audited
+  before_create :generate_token
+
   has_person_name
   has_address :address
 
-  before_create :generate_token
+  has_many :tasks, dependent: :destroy
 
   protected
 
